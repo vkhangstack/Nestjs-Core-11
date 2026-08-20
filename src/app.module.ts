@@ -5,13 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClsModule } from 'nestjs-cls';
+import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import { LoggerModule } from 'nestjs-pino';
-import {
-  AcceptLanguageResolver,
-  HeaderResolver,
-  I18nModule,
-  QueryResolver,
-} from 'nestjs-i18n';
 import { destination, multistream } from 'pino';
 import { DataSource } from 'typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
@@ -68,17 +63,14 @@ import { SharedModule } from './shared/shared.module.ts';
     }),
     TypeOrmModule.forRootAsync({
       imports: [SharedModule],
-      useFactory: (configService: ApiConfigService) =>
-        configService.postgresConfig,
+      useFactory: (configService: ApiConfigService) => configService.postgresConfig,
       inject: [ApiConfigService],
       dataSourceFactory: (options) => {
         if (!options) {
           throw new Error('Invalid options passed');
         }
 
-        return Promise.resolve(
-          addTransactionalDataSource(new DataSource(options)),
-        );
+        return Promise.resolve(addTransactionalDataSource(new DataSource(options)));
       },
     }),
     // eslint-disable-next-line canonical/id-match
@@ -90,11 +82,7 @@ import { SharedModule } from './shared/shared.module.ts';
           watch: configService.isDevelopment,
         },
       }),
-      resolvers: [
-        { use: QueryResolver, options: ['lang'] },
-        AcceptLanguageResolver,
-        new HeaderResolver(['x-lang']),
-      ],
+      resolvers: [{ use: QueryResolver, options: ['lang'] }, AcceptLanguageResolver, new HeaderResolver(['x-lang'])],
       imports: [SharedModule],
       inject: [ApiConfigService],
     }),

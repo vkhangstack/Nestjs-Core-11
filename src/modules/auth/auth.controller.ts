@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-  UploadedFile,
-  Version,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, UploadedFile, Version } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 import { ResponseCore } from '../../common/dto/response-core.dto.ts';
@@ -39,9 +30,7 @@ export class AuthController {
     type: LoginPayloadDto,
     description: 'User info with access token',
   })
-  async userLogin(
-    @Body() userLoginDto: UserLoginDto,
-  ): Promise<ResponseCore<LoginPayloadDto>> {
+  async userLogin(@Body() userLoginDto: UserLoginDto): Promise<ResponseCore<LoginPayloadDto>> {
     const result = await this.authService.validateUser(userLoginDto);
 
     if (!result.data) {
@@ -62,10 +51,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: UserDto, description: 'Successfully Registered' })
   @ApiFile({ name: 'avatar' })
-  async userRegister(
-    @Body() userRegisterDto: UserRegisterDto,
-    @UploadedFile() file?: Reference<IFile>,
-  ): Promise<ResponseCore<UserDto>> {
+  async userRegister(@Body() userRegisterDto: UserRegisterDto, @UploadedFile() file?: Reference<IFile>): Promise<ResponseCore<UserDto>> {
     const result = await this.userService.createUser(userRegisterDto, file);
 
     if (!result.data) {

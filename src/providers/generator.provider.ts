@@ -23,9 +23,9 @@ export class GeneratorProvider {
       throw new TypeError('key is required');
     }
 
-    const exec = new RegExp(
-      `(?<=https://s3.${process.env.AWS_S3_BUCKET_NAME_REGION}.amazonaws.com/${process.env.AWS_S3_BUCKET_NAME}/).*`,
-    ).exec(publicUrl);
+    const exec = new RegExp(`(?<=https://s3.${process.env.AWS_S3_BUCKET_NAME_REGION}.amazonaws.com/${process.env.AWS_S3_BUCKET_NAME}/).*`).exec(
+      publicUrl,
+    );
 
     if (!exec) {
       throw new TypeError('publicUrl is invalid');

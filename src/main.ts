@@ -1,11 +1,6 @@
 import './boilerplate.polyfill';
 
-import {
-  ClassSerializerInterceptor,
-  HttpStatus,
-  UnprocessableEntityException,
-  ValidationPipe,
-} from '@nestjs/common';
+import { ClassSerializerInterceptor, HttpStatus, UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import type { NestExpressApplication } from '@nestjs/platform-express';
@@ -26,11 +21,7 @@ import { SharedModule } from './shared/shared.module.ts';
 
 export async function bootstrap(): Promise<NestExpressApplication> {
   initializeTransactionalContext();
-  const app = await NestFactory.create<NestExpressApplication>(
-    AppModule,
-    new ExpressAdapter(),
-    { cors: true, bufferLogs: true },
-  );
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(), { cors: true, bufferLogs: true });
   app.useLogger(app.get(Logger));
   app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
   app.use(helmet());
@@ -40,17 +31,9 @@ export async function bootstrap(): Promise<NestExpressApplication> {
 
   const reflector = app.get(Reflector);
 
-  app.useGlobalFilters(
-    new HttpExceptionFilter(reflector),
-    new QueryFailedFilter(reflector),
-  );
+  app.useGlobalFilters(new HttpExceptionFilter(reflector), new QueryFailedFilter(reflector));
 
-  app.useGlobalInterceptors(
-    new ClassSerializerInterceptor(reflector),
-    new TranslationInterceptor(
-      app.select(SharedModule).get(TranslationService),
-    ),
-  );
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector), new TranslationInterceptor(app.select(SharedModule).get(TranslationService)));
 
   app.useGlobalPipes(
     new ValidationPipe({

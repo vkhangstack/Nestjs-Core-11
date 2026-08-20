@@ -1,7 +1,4 @@
-import {
-  BooleanField,
-  NumberField,
-} from '../../decorators/field.decorators.ts';
+import { BooleanField, NumberField } from '../../decorators/field.decorators.ts';
 import type { PageOptionsDto } from './page-options.dto.ts';
 
 interface IPageMetaDtoParameters {

@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Query,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Query, ValidationPipe } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { PageDto } from '../../common/dto/page.dto.ts';
@@ -34,9 +27,7 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @UseLanguageInterceptor()
   async admin(@AuthUser() user: UserEntity) {
-    const translation = await this.translationService.translate(
-      'admin.keywords.admin',
-    );
+    const translation = await this.translationService.translate('admin.keywords.admin');
 
     return {
       text: `${translation} ${user.firstName}`,

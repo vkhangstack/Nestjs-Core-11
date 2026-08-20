@@ -26,12 +26,9 @@ export class ServiceHealthIndicator extends HealthIndicator {
       }
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const result = await firstValueFrom(
-        this.clientProxy.send(eventName, { check: true }).pipe(timeout(10_000)),
-        {
-          defaultValue: undefined,
-        },
-      );
+      const result = await firstValueFrom(this.clientProxy.send(eventName, { check: true }).pipe(timeout(10_000)), {
+        defaultValue: undefined,
+      });
 
       return {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

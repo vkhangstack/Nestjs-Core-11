@@ -14,9 +14,7 @@ export class CreateSettingsCommand implements ICommand {
 }
 
 @CommandHandler(CreateSettingsCommand)
-export class CreateSettingsHandler
-  implements ICommandHandler<CreateSettingsCommand, UserSettingsEntity>
-{
+export class CreateSettingsHandler implements ICommandHandler<CreateSettingsCommand, UserSettingsEntity> {
   constructor(
     @InjectRepository(UserSettingsEntity)
     private userSettingsRepository: Repository<UserSettingsEntity>,
@@ -24,8 +22,7 @@ export class CreateSettingsHandler
 
   execute(command: CreateSettingsCommand) {
     const { userId, createSettingsDto } = command;
-    const userSettingsEntity =
-      this.userSettingsRepository.create(createSettingsDto);
+    const userSettingsEntity = this.userSettingsRepository.create(createSettingsDto);
 
     userSettingsEntity.userId = userId;
 

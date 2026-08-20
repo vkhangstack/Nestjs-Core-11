@@ -17,9 +17,6 @@ export const dataSource = new DataSource({
   database: process.env.DB_DATABASE,
   namingStrategy: new SnakeNamingStrategy(),
   subscribers: [UserSubscriber],
-  entities: [
-    'src/modules/**/*.entity{.ts,.js}',
-    'src/modules/**/*.view-entity{.ts,.js}',
-  ],
+  entities: ['src/modules/**/*.entity{.ts,.js}', 'src/modules/**/*.view-entity{.ts,.js}'],
   migrations: ['src/database/migrations/*{.ts,.js}'],
 });

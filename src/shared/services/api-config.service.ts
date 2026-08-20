@@ -36,10 +36,7 @@ export class ApiConfigService {
     }
   }
 
-  private getDuration(
-    key: string,
-    format?: Parameters<typeof parse>[1],
-  ): number {
+  private getDuration(key: string, format?: Parameters<typeof parse>[1]): number {
     const value = this.getString(key);
     const duration = parse(value, format);
 
@@ -87,9 +84,7 @@ export class ApiConfigService {
       path.join(`${import.meta.dirname}/../../modules/**/*.entity{.ts,.js}`),
       path.join(`${import.meta.dirname}/../../modules/**/*.view-entity{.ts,.js}`),
     ];
-    const migrations = [
-      path.join(`${import.meta.dirname}/../../database/migrations/*{.ts,.js}`),
-    ];
+    const migrations = [path.join(`${import.meta.dirname}/../../database/migrations/*{.ts,.js}`)];
 
     return {
       entities,
@@ -156,9 +151,7 @@ export class ApiConfigService {
     const levels: Record<string, string> = {};
 
     for (const part of raw.split(',')) {
-      const [target = '*', value] = part.includes(':')
-        ? part.split(':', 2)
-        : ['*', part];
+      const [target = '*', value] = part.includes(':') ? part.split(':', 2) : ['*', part];
 
       levels[target.trim()] = (value ?? 'info').trim();
     }

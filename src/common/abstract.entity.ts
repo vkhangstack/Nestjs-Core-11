@@ -1,15 +1,7 @@
-import {
-  Column,
-  CreateDateColumn,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 import { LanguageCode } from '../constants/language-code.ts';
-import type {
-  AbstractDto,
-  AbstractTranslationDto,
-} from './dto/abstract.dto.ts';
+import type { AbstractDto, AbstractTranslationDto } from './dto/abstract.dto.ts';
 
 /**
  * Abstract Entity
@@ -19,10 +11,7 @@ import type {
  * It's experimental and recommended using it only in microservice architecture,
  * otherwise just delete and use your own entity.
  */
-export abstract class AbstractEntity<
-  DTO extends AbstractDto = AbstractDto,
-  O = never,
-> {
+export abstract class AbstractEntity<DTO extends AbstractDto = AbstractDto, O = never> {
   @PrimaryGeneratedColumn('uuid')
   id!: Uuid;
 
@@ -42,19 +31,14 @@ export abstract class AbstractEntity<
     const dtoClass = Object.getPrototypeOf(this).dtoClass;
 
     if (!dtoClass) {
-      throw new Error(
-        `You need to use @UseDto on class (${this.constructor.name}) be able to call toDto function`,
-      );
+      throw new Error(`You need to use @UseDto on class (${this.constructor.name}) be able to call toDto function`);
     }
 
     return new dtoClass(this, options);
   }
 }
 
-export class AbstractTranslationEntity<
-  DTO extends AbstractTranslationDto = AbstractTranslationDto,
-  O = never,
-> extends AbstractEntity<DTO, O> {
+export class AbstractTranslationEntity<DTO extends AbstractTranslationDto = AbstractTranslationDto, O = never> extends AbstractEntity<DTO, O> {
   @Column({ type: 'enum', enum: LanguageCode })
   languageCode!: LanguageCode;
 }

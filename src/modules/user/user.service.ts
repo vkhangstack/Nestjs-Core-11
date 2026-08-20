@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
-import type { FindOptionsWhere } from 'typeorm';
-import { Repository } from 'typeorm';
+import type { FindOptionsWhere, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
 import type { PageDto } from '../../common/dto/page.dto.ts';
@@ -38,12 +37,8 @@ export class UserService {
     return this.userRepository.findOneBy(findData);
   }
 
-  findByUsernameOrEmail(
-    options: Partial<{ username: string; email: string }>,
-  ): Promise<UserEntity | null> {
-    const queryBuilder = this.userRepository
-      .createQueryBuilder('user')
-      .leftJoinAndSelect<UserEntity, 'user'>('user.settings', 'settings');
+  findByUsernameOrEmail(options: Partial<{ username: string; email: string }>): Promise<UserEntity | null> {
+    const queryBuilder = this.userRepository.createQueryBuilder('user').leftJoinAndSelect<UserEntity, 'user'>('user.settings', 'settings');
 
     if (options.email) {
       queryBuilder.orWhere('user.email = :email', {
@@ -61,10 +56,7 @@ export class UserService {
   }
 
   @Transactional()
-  async createUser(
-    userRegisterDto: UserRegisterDto,
-    file?: Reference<IFile>,
-  ): Promise<ResponseCore<UserEntity>> {
+  async createUser(userRegisterDto: UserRegisterDto, file?: Reference<IFile>): Promise<ResponseCore<UserEntity>> {
     const user = this.userRepository.create(userRegisterDto);
 
     if (file && !this.validatorService.isImage(file.mimetype)) {
@@ -88,9 +80,7 @@ export class UserService {
     return ResponseCore.ok(user);
   }
 
-  async getUsers(
-    pageOptionsDto: UsersPageOptionsDto,
-  ): Promise<PageDto<UserDto>> {
+  async getUsers(pageOptionsDto: UsersPageOptionsDto): Promise<PageDto<UserDto>> {
     const queryBuilder = this.userRepository.createQueryBuilder('user');
     const [items, pageMetaDto] = await queryBuilder.paginate(pageOptionsDto);
 
@@ -111,12 +101,7 @@ export class UserService {
     return ResponseCore.ok(userEntity.toDto());
   }
 
-  createSettings(
-    userId: Uuid,
-    createSettingsDto: CreateSettingsDto,
-  ): Promise<UserSettingsEntity> {
-    return this.commandBus.execute<CreateSettingsCommand, UserSettingsEntity>(
-      new CreateSettingsCommand(userId, createSettingsDto),
-    );
+  createSettings(userId: Uuid, createSettingsDto: CreateSettingsDto): Promise<UserSettingsEntity> {
+    return this.commandBus.execute<CreateSettingsCommand, UserSettingsEntity>(new CreateSettingsCommand(userId, createSettingsDto));
   }
 }

@@ -1,9 +1,5 @@
 import { Order } from '../../constants/order.ts';
-import {
-  EnumFieldOptional,
-  NumberFieldOptional,
-  StringFieldOptional,
-} from '../../decorators/field.decorators.ts';
+import { EnumFieldOptional, NumberFieldOptional, StringFieldOptional } from '../../decorators/field.decorators.ts';
 
 export class PageOptionsDto {
   @EnumFieldOptional(() => Order, {

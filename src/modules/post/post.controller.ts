@@ -1,20 +1,5 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-  Put,
-  Query,
-} from '@nestjs/common';
-import {
-  ApiAcceptedResponse,
-  ApiCreatedResponse,
-  ApiOkResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post, Put, Query } from '@nestjs/common';
+import { ApiAcceptedResponse, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 import type { PageDto } from '../../common/dto/page.dto.ts';
 import { ResponseCore } from '../../common/dto/response-core.dto.ts';
@@ -39,14 +24,8 @@ export class PostController {
   @Auth([RoleType.USER])
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ type: PostDto })
-  async createPost(
-    @Body() createPostDto: CreatePostDto,
-    @AuthUser() user: UserEntity,
-  ) {
-    const postEntity = await this.postService.createPost(
-      user.id,
-      createPostDto,
-    );
+  async createPost(@Body() createPostDto: CreatePostDto, @AuthUser() user: UserEntity) {
+    const postEntity = await this.postService.createPost(user.id, createPostDto);
 
     return postEntity.toDto();
   }
@@ -55,9 +34,7 @@ export class PostController {
   @Auth([RoleType.USER])
   @UseLanguageInterceptor()
   @ApiPageResponse({ type: PostDto })
-  async getPosts(
-    @Query() postsPageOptionsDto: PostPageOptionsDto,
-  ): Promise<PageDto<PostDto>> {
+  async getPosts(@Query() postsPageOptionsDto: PostPageOptionsDto): Promise<PageDto<PostDto>> {
     return this.postService.getAllPost(postsPageOptionsDto);
   }
 
@@ -65,9 +42,7 @@ export class PostController {
   @Auth([])
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: PostDto })
-  async getSinglePost(
-    @UUIDParam('id') id: Uuid,
-  ): Promise<ResponseCore<PostDto>> {
+  async getSinglePost(@UUIDParam('id') id: Uuid): Promise<ResponseCore<PostDto>> {
     const result = await this.postService.getSinglePost(id);
 
     if (!result.data) {
@@ -80,10 +55,7 @@ export class PostController {
   @Put(':id')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiAcceptedResponse()
-  updatePost(
-    @UUIDParam('id') id: Uuid,
-    @Body() updatePostDto: UpdatePostDto,
-  ): Promise<ResponseCore<null>> {
+  updatePost(@UUIDParam('id') id: Uuid, @Body() updatePostDto: UpdatePostDto): Promise<ResponseCore<null>> {
     return this.postService.updatePost(id, updatePostDto);
   }
 

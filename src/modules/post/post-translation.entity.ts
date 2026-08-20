@@ -18,10 +18,14 @@ export class PostTranslationEntity extends AbstractTranslationEntity<PostTransla
   @Column({ type: 'uuid' })
   postId!: Uuid;
 
-  @ManyToOne(() => PostEntity, (postEntity) => postEntity.translations, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
+  @ManyToOne(
+    () => PostEntity,
+    (postEntity) => postEntity.translations,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
+  )
   @JoinColumn({ name: 'post_id' })
   post?: Relation<PostEntity>;
 }

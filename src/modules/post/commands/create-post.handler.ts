@@ -8,9 +8,7 @@ import { PostTranslationEntity } from '../post-translation.entity.ts';
 import { CreatePostCommand } from './create-post.command.ts';
 
 @CommandHandler(CreatePostCommand)
-export class CreatePostHandler
-  implements ICommandHandler<CreatePostCommand, PostEntity>
-{
+export class CreatePostHandler implements ICommandHandler<CreatePostCommand, PostEntity> {
   constructor(
     @InjectRepository(PostEntity)
     private postRepository: Repository<PostEntity>,
@@ -32,9 +30,7 @@ export class CreatePostHandler
         postId: postEntity.id,
         languageCode,
         title: createTranslationDto.text,
-        description: createPostDto.description.find(
-          (desc) => desc.languageCode === languageCode,
-        )!.text,
+        description: createPostDto.description.find((desc) => desc.languageCode === languageCode)!.text,
       });
 
       translations.push(translationEntity);

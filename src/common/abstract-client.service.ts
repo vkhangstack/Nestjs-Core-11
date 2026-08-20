@@ -16,17 +16,9 @@ export class AbstractClientService<ActionType> {
 
   public async send(pattern: ActionType, data: unknown): Promise<void>;
 
-  public async send<R>(
-    pattern: ActionType,
-    data: unknown,
-    returnDataOptions: { class: Constructor<R>; isPage: true },
-  ): Promise<PageDto<R>>;
+  public async send<R>(pattern: ActionType, data: unknown, returnDataOptions: { class: Constructor<R>; isPage: true }): Promise<PageDto<R>>;
 
-  public async send<R>(
-    pattern: ActionType,
-    data: unknown,
-    returnDataOptions?: { class: Constructor<R>; isPage?: false },
-  ): Promise<R>;
+  public async send<R>(pattern: ActionType, data: unknown, returnDataOptions?: { class: Constructor<R>; isPage?: false }): Promise<R>;
 
   public async send<R, I>(
     pattern: ActionType,
@@ -36,12 +28,9 @@ export class AbstractClientService<ActionType> {
       isPage?: boolean;
     }>,
   ): Promise<R | PageDto<R> | void> {
-    const returnData = await firstValueFrom(
-      this.client.send<{ data?: R; meta?: PageMetaDto }>(pattern, data),
-      {
-        defaultValue: undefined,
-      },
-    );
+    const returnData = await firstValueFrom(this.client.send<{ data?: R; meta?: PageMetaDto }>(pattern, data), {
+      defaultValue: undefined,
+    });
 
     if (returnDataOptions?.isPage && (!returnData?.data || !returnData.meta)) {
       throw new PageTypeException();

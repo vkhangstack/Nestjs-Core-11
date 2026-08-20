@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-
-import { validateHash } from '../../common/utils.ts';
 import { ResponseCore } from '../../common/dto/response-core.dto.ts';
+import { validateHash } from '../../common/utils.ts';
 import { ErrorCode } from '../../constants/error-code.ts';
 import type { RoleType } from '../../constants/role-type.ts';
 import { TokenType } from '../../constants/token-type.ts';
@@ -20,10 +19,7 @@ export class AuthService {
     private userService: UserService,
   ) {}
 
-  async createAccessToken(data: {
-    role: RoleType;
-    userId: Uuid;
-  }): Promise<TokenPayloadDto> {
+  async createAccessToken(data: { role: RoleType; userId: Uuid }): Promise<TokenPayloadDto> {
     return new TokenPayloadDto({
       expiresIn: this.configService.authConfig.jwtExpirationTime,
       accessToken: await this.jwtService.signAsync({
@@ -34,17 +30,12 @@ export class AuthService {
     });
   }
 
-  async validateUser(
-    userLoginDto: UserLoginDto,
-  ): Promise<ResponseCore<UserEntity>> {
+  async validateUser(userLoginDto: UserLoginDto): Promise<ResponseCore<UserEntity>> {
     const user = await this.userService.findOne({
       email: userLoginDto.email,
     });
 
-    const isPasswordValid = await validateHash(
-      userLoginDto.password,
-      user?.password,
-    );
+    const isPasswordValid = await validateHash(userLoginDto.password, user?.password);
 
     if (!isPasswordValid) {
       return ResponseCore.fail(ErrorCode.NOT_FOUND, 'error.userNotFound');

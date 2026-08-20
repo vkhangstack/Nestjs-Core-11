@@ -20,10 +20,7 @@ declare global {
   interface Array<T> {
     toDtos<Dto extends AbstractDto>(this: T[], options?: unknown): Dto[];
 
-    getByLanguage(
-      this: CreateTranslationDto[],
-      languageCode: LanguageCode,
-    ): string;
+    getByLanguage(this: CreateTranslationDto[], languageCode: LanguageCode): string;
 
     toPageDto<Dto extends AbstractDto>(
       this: T[],
@@ -53,10 +50,7 @@ declare module 'typeorm' {
 
     leftJoinAndSelect<AliasEntity extends AbstractEntity, A extends string>(
       this: SelectQueryBuilder<Entity>,
-      property: `${A}.${Exclude<
-        KeyOfType<AliasEntity, AbstractEntity>,
-        symbol
-      >}`,
+      property: `${A}.${Exclude<KeyOfType<AliasEntity, AbstractEntity>, symbol>}`,
       alias: string,
       condition?: string,
       parameters?: ObjectLiteral,
@@ -64,10 +58,7 @@ declare module 'typeorm' {
 
     leftJoin<AliasEntity extends AbstractEntity, A extends string>(
       this: SelectQueryBuilder<Entity>,
-      property: `${A}.${Exclude<
-        KeyOfType<AliasEntity, AbstractEntity>,
-        symbol
-      >}`,
+      property: `${A}.${Exclude<KeyOfType<AliasEntity, AbstractEntity>, symbol>}`,
       alias: string,
       condition?: string,
       parameters?: ObjectLiteral,
@@ -75,10 +66,7 @@ declare module 'typeorm' {
 
     innerJoinAndSelect<AliasEntity extends AbstractEntity, A extends string>(
       this: SelectQueryBuilder<Entity>,
-      property: `${A}.${Exclude<
-        KeyOfType<AliasEntity, AbstractEntity>,
-        symbol
-      >}`,
+      property: `${A}.${Exclude<KeyOfType<AliasEntity, AbstractEntity>, symbol>}`,
       alias: string,
       condition?: string,
       parameters?: ObjectLiteral,
@@ -86,10 +74,7 @@ declare module 'typeorm' {
 
     innerJoin<AliasEntity extends AbstractEntity, A extends string>(
       this: SelectQueryBuilder<Entity>,
-      property: `${A}.${Exclude<
-        KeyOfType<AliasEntity, AbstractEntity>,
-        symbol
-      >}`,
+      property: `${A}.${Exclude<KeyOfType<AliasEntity, AbstractEntity>, symbol>}`,
       alias: string,
       condition?: string,
       parameters?: ObjectLiteral,
@@ -97,34 +82,19 @@ declare module 'typeorm' {
   }
 }
 
-Array.prototype.toDtos = function <
-  Entity extends AbstractEntity<Dto>,
-  Dto extends AbstractDto,
->(options?: unknown): Dto[] {
-  return _.compact(
-    _.map<Entity, Dto>(this as Entity[], (item) =>
-      item.toDto(options as never),
-    ),
-  );
+Array.prototype.toDtos = function <Entity extends AbstractEntity<Dto>, Dto extends AbstractDto>(options?: unknown): Dto[] {
+  return _.compact(_.map<Entity, Dto>(this as Entity[], (item) => item.toDto(options as never)));
 };
 
 Array.prototype.getByLanguage = function (languageCode: LanguageCode): string {
-  return this.find((translation) => languageCode === translation.languageCode)!
-    .text;
+  return this.find((translation) => languageCode === translation.languageCode)!.text;
 };
 
-Array.prototype.toPageDto = function (
-  pageMetaDto: PageMetaDto,
-  options?: unknown,
-) {
+Array.prototype.toPageDto = function (pageMetaDto: PageMetaDto, options?: unknown) {
   return new PageDto(this.toDtos(options), pageMetaDto);
 };
 
-SelectQueryBuilder.prototype.searchByString = function (
-  q,
-  columnNames,
-  options,
-) {
+SelectQueryBuilder.prototype.searchByString = function (q, columnNames, options) {
   if (!q) {
     return this;
   }

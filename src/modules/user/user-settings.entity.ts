@@ -9,10 +9,7 @@ import { UserEntity } from './user.entity.ts';
 
 @Entity({ name: 'user_settings' })
 @UseDto(UserDto)
-export class UserSettingsEntity extends AbstractEntity<
-  UserDto,
-  UserDtoOptions
-> {
+export class UserSettingsEntity extends AbstractEntity<UserDto, UserDtoOptions> {
   @Column({ default: false })
   isEmailVerified?: boolean;
 
@@ -22,10 +19,14 @@ export class UserSettingsEntity extends AbstractEntity<
   @Column({ type: 'uuid' })
   userId?: string;
 
-  @OneToOne(() => UserEntity, (user) => user.settings, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
+  @OneToOne(
+    () => UserEntity,
+    (user) => user.settings,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
+  )
   @JoinColumn({ name: 'user_id' })
   user?: Relation<UserEntity>;
 }

@@ -1,13 +1,12 @@
 {
-    "cSpell.words": [
-        "Injectable",
-        "microservices",
-        "nestjs",
-        "postgres"
-    ],
-    "editor.detectIndentation": false,
-    "rift.autostart": false,
-    "i18n-ally.localesPaths": [
-      "src/i18n"
-    ]
+  "cSpell.words": ["Injectable", "microservices", "nestjs", "postgres"],
+  "editor.detectIndentation": false,
+  "rift.autostart": false,
+  "i18n-ally.localesPaths": ["src/i18n"],
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "quickfix.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  }
 }

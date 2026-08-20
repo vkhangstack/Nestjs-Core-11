@@ -21,9 +21,9 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "isolatedModules": true,
-//    "exactOptionalPropertyTypes": true,
+    //    "exactOptionalPropertyTypes": true,
     "noImplicitThis": true,
-//    "noPropertyAccessFromIndexSignature": true,
+    //    "noPropertyAccessFromIndexSignature": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "strictPropertyInitialization": true,
@@ -40,13 +40,8 @@
   "ts-node": {
     "experimentalSpecifierResolution": "node",
     "transpileOnly": true,
-    "esm": true,
-},
-  "include": [
-    "src/**/*",
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
-  ]
+    "esm": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

@@ -25,19 +25,13 @@ export class AbstractDto {
     const languageCode = ContextProvider.getLanguage();
 
     if (languageCode && entity.translations) {
-      const translationEntity = entity.translations.find(
-        (titleTranslation) => titleTranslation.languageCode === languageCode,
-      )!;
+      const translationEntity = entity.translations.find((titleTranslation) => titleTranslation.languageCode === languageCode)!;
 
       const fields: Record<string, string> = {};
 
       for (const key of Object.keys(translationEntity)) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const metadata = Reflect.getMetadata(
-          DYNAMIC_TRANSLATION_DECORATOR_KEY,
-          this,
-          key,
-        );
+        const metadata = Reflect.getMetadata(DYNAMIC_TRANSLATION_DECORATOR_KEY, this, key);
 
         if (metadata) {
           fields[key] = (translationEntity as never)[key];
