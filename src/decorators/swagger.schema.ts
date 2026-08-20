@@ -12,7 +12,7 @@ import {
 import type {
   ReferenceObject,
   SchemaObject,
-} from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+} from '@nestjs/swagger';
 import _ from 'lodash';
 
 import type { IApiFile } from '../interfaces/IApiFile.ts';
