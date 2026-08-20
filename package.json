@@ -81,7 +81,7 @@
     "source-map-support": "^0.5.21",
     "swagger-ui-express": "^5.0.1",
     "tslib": "^2.8.1",
-    "typeorm": "0.3.20",
+    "typeorm": "0.3.31",
     "typeorm-transactional": "~0.5.0",
     "uuid": "^11.0.5"
   },
